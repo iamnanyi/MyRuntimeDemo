@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MyClass : NSObject
+@interface MyClass : NSObject <NSCopying, NSCoding>
 
 @property(nonatomic, strong) NSArray *array;
 
