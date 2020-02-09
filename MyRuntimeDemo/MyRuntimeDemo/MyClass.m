@@ -17,6 +17,8 @@
 
 - (void)method3WithArg1:(NSInteger)arg1 arg2:(NSString *)arg2;
 
+- (void)submethod1;
+
 @end
 
 @implementation MyClass
@@ -35,6 +37,10 @@
 
 - (void)method3WithArg1:(NSInteger)arg1 arg2:(NSString *)arg2 {
 	NSLog(@"arg1: %ld, arg2: %@", arg1, arg2);
+}
+
+- (void)submethod1 {
+    NSLog(@"run sub method 1");
 }
 
 @end

@@ -10,8 +10,7 @@
 #import "MyClass.h"
 #import <objc/runtime.h>
 
-#pragma mark - 类相关操作函数
-
+/// 类相关操作函数
 void class_opearte() {
     MyClass *myClass = [[MyClass alloc] init];
     unsigned int outCount = 0;
@@ -105,9 +104,31 @@ void class_opearte() {
     NSLog(@"============================");
 }
 
+/// 动态创建类
+void dynamicCreateClass() {
+    Class cls = objc_allocateClassPair(MyClass.class, "MySubClass", 0);
+    IMP imp_submethod1 = class_getMethodImplementation(cls, @selector(submethod1));
+    class_addMethod(cls, @selector(submethod1), (IMP)imp_submethod1, "v@:");
+    class_replaceMethod(cls, @selector(method1), (IMP)imp_submethod1, "v@:");
+    class_addIvar(cls, "_ivar1", sizeof(NSString *), log(sizeof(NSString *)), "i");
+    
+    objc_property_attribute_t type = {"T", "@\"NSString\""};
+    objc_property_attribute_t ownership = {"C", ""};
+    objc_property_attribute_t backingivar = {"V", "_ivar1"};
+    objc_property_attribute_t attrs[] = {type, ownership, backingivar};
+    
+    class_addProperty(cls, "property2", attrs, 3);
+    objc_registerClassPair(cls);
+    
+    id instance = [[cls alloc] init];
+    [instance performSelector:@selector(submethod1)];
+    [instance performSelector:@selector(method1)];
+}
+
 int main(int argc, const char * argv[]) {
 	@autoreleasepool {
-        class_opearte();
+//        class_opearte();
+        dynamicCreateClass();
 	}
 	return 0;
 }
